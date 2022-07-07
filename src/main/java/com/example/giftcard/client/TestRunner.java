@@ -59,12 +59,14 @@ public class TestRunner implements CommandLineRunner {
 //        UUID id = UUID.randomUUID();
         UUID id = null;
 
-        FileWriter file = new FileWriter("/Users/akkharawat.burachokviwat/Desktop/result.csv");
+        FileWriter file = new FileWriter("/Users/akkharawat.burachokviwat/Desktop/result3.csv");
         CSVWriter resultFile = new CSVWriter(file);
 
-        int[] nums = {1, 10, 100, 200, 300, 400};
+//        int[] nums = {1, 10, 100, 200, 300, 400};
+        int[] nums = {1};
 
         for (int round : nums) {
+
             long start1 = System.nanoTime();
             controller(round, id);
             long end1 = System.nanoTime();
@@ -82,23 +84,27 @@ public class TestRunner implements CommandLineRunner {
         ExecutorService pool = Executors.newFixedThreadPool(numthreads);
 
         for (int round : nums) {
+//            Thread.sleep(500);
+//            long start2 = System.nanoTime();
             for (int i = 0; i < round; ++i) {
                 Runnable r = new Task(commandGateway);
                 tasks.add(r);
             }
 
+//            int e=0;
             long start2 = System.nanoTime();
             for (Runnable task : tasks) {
                 pool.execute(task);
+//                ++e;
             }
             long end2 = System.nanoTime();
 
-            double elapse = (end2 - start2) / Math.pow(10, 9);
-            System.out.println("Elapsed Time in seconds: " + elapse);
-            
-            double throughput = 10 * round / elapse;
-            String[] time = {"thread", Integer.toString(round), Integer.toString(numthreads), Double.toString(elapse), Double.toString(throughput)};
-            resultFile.writeNext(time);
+            double elapse2 = (end2 - start2) / Math.pow(10, 9);
+            System.out.println("Elapsed Time in seconds: " + elapse2);
+
+            double throughput2 = 10 * round / elapse2;
+            String[] time2 = {"thread", Integer.toString(round), Integer.toString(numthreads), Double.toString(elapse2), Double.toString(throughput2)};
+            resultFile.writeNext(time2);
 
             tasks.removeAll(tasks);
         }
@@ -106,10 +112,10 @@ public class TestRunner implements CommandLineRunner {
         resultFile.close();
 
 
-        log.debug("querying");
-        GiftcardSummary summary = queryGateway.query(new GiftcardSummaryQuery(id),
-                ResponseTypes.instanceOf(GiftcardSummary.class)).join();
-        log.debug("summary queried {}", summary);
+//        log.debug("querying");
+//        GiftcardSummary summary = queryGateway.query(new GiftcardSummaryQuery(id),
+//                ResponseTypes.instanceOf(GiftcardSummary.class)).join();
+//        log.debug("summary queried {}", summary);
 
 
     }
